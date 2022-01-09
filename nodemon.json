@@ -1,6 +1,0 @@
-{
-    "env": {
-        "Mongo_DB_PW": "1234",
-        "JWT_Secret_Key": "portfolioSecretKey"
-    }
-}
