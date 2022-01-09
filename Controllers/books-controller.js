@@ -8,23 +8,24 @@ exports.books_get_all = ('/', (req, res, next) => {
         .select("_id title author description language bookImage")
         .exec()
         .then(docs => {
-            const response = {
-                count: docs.length,
-                allBooks: docs.map(doc => {
+            const response =
+                // count: docs.length,
+                // allBooks: 
+                docs.map(doc => {
                     return {
                         _id: doc._id,
                         title: doc.title,
                         author: doc.author,
                         description: doc.description,
                         language: doc.language,
-                        bookImage: doc.bookImage,
-                        request: {
-                            type: "GET",
-                            url: "http://127.0.0.1:5000/books/" + doc._id
-                        }
+                        bookImage: "http://localhost:5000/" + doc.bookImage,
+                        // request: {
+                        //     type: "GET",
+                        //     url: "http://127.0.0.1:5000/books/" + doc._id
+                        // }
                     };
                 })
-            };
+
             if (docs.length >= 0) {
                 res.status(200).send(response);
             } else {
@@ -35,7 +36,7 @@ exports.books_get_all = ('/', (req, res, next) => {
 });
 
 // GET method to read a data by ID
-exports.books_get_book = ('/:bookId', (req, res, next) => {
+exports.books_get_book = (req, res, next) => {
     const id = req.params.bookId;
 
     Book.findById({ _id: id })
@@ -56,7 +57,7 @@ exports.books_get_book = ('/:bookId', (req, res, next) => {
             }
         })
         .catch(err => res.status(500).send({ message: err }));
-});
+}
 
 // POST method to create a new data
 exports.books_create_book = (req, res, next) => {
@@ -114,7 +115,7 @@ exports.books_update_book = (req, res, next) => {
 }
 
 // UPDATE method to patch an exist data
-exports.books_update_book = ('/:bookId', (req, res, next) => {
+exports.books_update_book = (req, res, next) => {
     const id = req.params.bookId;
 
     Book.updateOne({ _id: id }, {
@@ -133,10 +134,10 @@ exports.books_update_book = ('/:bookId', (req, res, next) => {
         })
     })
         .catch(err => res.status(500).send({ message: err }))
-})
+}
 
 // DELETE method to remove a data by ID
-exports.books_delete_book = ('/:bookId', (req, res, next) => {
+exports.books_delete_book = (req, res, next) => {
     const id = req.params.bookId;
 
     Book.findByIdAndRemove({ _id: id })
@@ -150,4 +151,4 @@ exports.books_delete_book = ('/:bookId', (req, res, next) => {
             })
         })
         .catch(err => res.status(500).send({ message: err }));
-})
+}

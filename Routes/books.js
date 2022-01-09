@@ -39,6 +39,6 @@ router.get("/:bookId", BooksController.books_get_book);
 
 router.patch("/:bookId", verifyAuth, BooksController.books_update_book);
 
-router.delete("/:BookId", verifyAuth, BooksController.books_delete_book);
+router.delete("/:bookId", verifyAuth, BooksController.books_delete_book);
 
 module.exports = router;
