@@ -11,8 +11,15 @@ const booksRouter = require('./Routes/books');
 const ordersRouterTest = require('./Routes/ordersTest');
 const ordersRouter = require('./Routes/orders');
 const usersRouter = require('./Routes/users');
+const userAuthRouter = require('./Routes/user-auth');
 const dotenv = require('dotenv');
 dotenv.config();
+
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 // A middleware to log incoming request 
 app.use(morgan('dev'));
@@ -26,7 +33,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token"
     );
     if (req.method === "OPTIONS") {
         res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
@@ -35,8 +42,30 @@ app.use((req, res, next) => {
     next();
 });
 
+
+app.use(
+    cors({
+        origin: ["http://localhost:3000"],
+        methods: ["GET", "POST"],
+        credentials: true,
+    })
+);
+
+app.use(
+    session({
+        key: "userId",
+        secret: "subscribe",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            expires: 60 * 60 * 24,
+        },
+    })
+);
+
 // A middleware to handle body request
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use('/', rootRouter);
@@ -45,6 +74,7 @@ app.use('/user', userRouter);
 app.use('/orders', ordersRouter);
 app.use('/users-test', usersRouter);
 app.use('/orders-test', ordersRouterTest);
+app.use('/user-auth', userAuthRouter);
 
 app.use((req, res, next) => {
     const error = new Error("Page Not Found!");

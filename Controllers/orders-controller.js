@@ -1,42 +1,107 @@
 const mongoose = require('mongoose');
-
 const Order = require('../Models/Order');
 const Book = require('../Models/Book');
 
-exports.orders_get_all = (req, res, next) => {
+// exports.orders_get_all = (req, res, next) => {
+//     Order.find()
+//         .select("book quantity _id")
+//         .populate('book', 'title')
+//         .exec()
+//         .then(docs => {
+//             res.status(200).json({
+//                 count: docs.length,
+//                 orders: docs.map(doc => {
+//                     return {
+//                         _id: doc._id,
+//                         book: {
+//                             title: doc.book.title,
+//                         },
+//                         quantity: doc.quantity,
+//                         request: {
+//                             type: "GET",
+//                             url: "http://localhost:5000/orders/" + doc._id
+//                         }
+//                     };
+//                 })
+//             });
+//         })
+//         .catch(err => {
+//             res.status(500).json({
+//                 error: err
+//             });
+//         });
+// };
+
+exports.orders_get_all = ('/', (req, res, next) => {
     Order.find()
-        .select("book quantity _id")
+        .select("_id  book title author quantity")
         .populate("book")
         .exec()
         .then(docs => {
-            res.status(200).json({
-                count: docs.length,
-                orders: docs.map(doc => {
+            const response =
+                //count: docs.length,
+                docs.map(doc => {
                     return {
                         _id: doc._id,
                         book: {
                             title: doc.book.title,
-                            author: doc.book.author
+                            author: doc.book.author,
+                            description: doc.book.description,
+                            description: doc.book.description,
+                            language: doc.book.language,
+                            bookImage: "http://localhost:5000/" + doc.book.bookImage
                         },
                         quantity: doc.quantity,
+
                         request: {
                             type: "GET",
-                            url: "http://localhost:3000/orders/" + doc._id
+                            url: "http://127.0.0.1:5000/books/" + doc._id
                         }
                     };
                 })
-            });
+
+            if (docs.length >= 0) {
+                res.status(200).send(response);
+            } else {
+                res.status(404).send({ message: "No data found!" })
+            }
         })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            });
-        });
-};
+        .catch(err => res.status(500).send({ message: "There is en error!" }));
+});
+
+
+// exports.orders_get_all = (req, res, next) => {
+//     Order.find()
+//         .select("book quantity _id")
+//         .populate('book', 'title')
+//         .exec()
+//         .then(docs => {
+//             res.status(200).json({
+//                 // count: docs.length,
+//                 orders: docs.map(doc => {
+//                     return {
+//                         _id: doc._id,
+//                         book: doc.book,
+//                         quantity: doc.quantity,
+//                         request: {
+//                             type: "GET",
+//                             url: "http://localhost:3000/orders/" + doc._id
+//                         }
+//                     };
+//                 })
+//             });
+//         })
+//         .catch(err => {
+//             res.status(500).json({
+//                 error: err
+//             });
+//         });
+// };
+
 
 exports.orders_get_order = (req, res, next) => {
     Order.findById(req.params.orderId)
-        .populate("book")
+        .populate('book')
         .exec()
         .then(order => {
             if (!order) {
@@ -48,7 +113,7 @@ exports.orders_get_order = (req, res, next) => {
                 order: order,
                 request: {
                     type: "GET",
-                    url: "http://localhost:3000/orders"
+                    url: "http://localhost:5000/orders"
                 }
             });
         })
@@ -85,7 +150,7 @@ exports.orders_create_order = (req, res, next) => {
                 },
                 request: {
                     type: "POST",
-                    url: "http://localhost:3000/orders/" + result._id
+                    url: "http://localhost:5000/orders/" + result._id
                 }
             });
         })
@@ -105,7 +170,7 @@ exports.orders_delete_order = (req, res, next) => {
                 message: "Order is deleted",
                 request: {
                     type: "DELETE",
-                    url: "http://localhost:3000/orders",
+                    url: "http://localhost:5000/orders",
                     body: { productId: "ID", quantity: "Number" }
                 }
             });

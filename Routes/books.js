@@ -1,7 +1,7 @@
 const exprees = require('express');
 const router = exprees.Router();
 const multer = require('multer');
-const verifyAuth = require('../Auth/verify-auth');
+const verifyAuth = require('../Auth/verify-token');
 const BooksController = require('../Controllers/books-controller');
 
 const storage = multer.diskStorage({
