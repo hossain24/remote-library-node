@@ -18,11 +18,11 @@ exports.books_get_all = ('/', (req, res, next) => {
                         author: doc.author,
                         description: doc.description,
                         language: doc.language,
-                        bookImage: "http://localhost:5000/" + doc.bookImage,
-                        // request: {
-                        //     type: "GET",
-                        //     url: "http://127.0.0.1:5000/books/" + doc._id
-                        // }
+                        bookImage: "https://node-webshop-api.herokuapp.com/" + doc.bookImage,
+                        request: {
+                            type: "GET",
+                            url: "https://node-webshop-api.herokuapp.com/books/" + doc._id
+                        }
                     };
                 })
 
@@ -49,7 +49,7 @@ exports.books_get_book = (req, res, next) => {
                     bookInfo: doc,
                     request: {
                         type: "GET",
-                        url: "http://127.0.0.1:5000/books/" + doc._id
+                        url: "https://node-webshop-api.herokuapp.com/books/" + doc._id
                     }
                 })
             } else {
@@ -83,7 +83,7 @@ exports.books_create_book = (req, res, next) => {
                     language: doc.language,
                     request: {
                         type: "POST",
-                        url: "http://127.0.0.1:5000/books/" + doc._id
+                        url: "https://node-webshop-api.herokuapp.com/books/" + doc._id
                     }
                 }
             })
@@ -107,7 +107,7 @@ exports.books_update_book = (req, res, next) => {
                 message: "The book info is updated",
                 request: {
                     type: "UPDATE",
-                    url: "http://127.0.0.1:5000/books/" + id
+                    url: "https://node-webshop-api.herokuapp.com/books/" + id
                 }
             })
         })
@@ -129,7 +129,7 @@ exports.books_update_book = (req, res, next) => {
             message: "The book info is updated",
             request: {
                 type: "UPDATE",
-                url: "http://127.0.0.1:5000/books/" + id
+                url: "https://node-webshop-api.herokuapp.com/books/" + id
             }
         })
     })
@@ -146,7 +146,7 @@ exports.books_delete_book = (req, res, next) => {
                 message: "The book info is removed",
                 request: {
                     type: "DELETE",
-                    url: "http://127.0.0.1:5000/books/" + id
+                    url: "https://node-webshop-api.herokuapp.com/books/" + id
                 }
             })
         })
