@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Book = require('../model/Book');
 
-
 // GET method to read all data  
 exports.books_get_all = ('/', (req, res, next) => {
     Book.find()
