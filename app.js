@@ -9,6 +9,10 @@ var mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
+var userRouter = require('./routes/user');
+var ordersRouterTest = require('./routes/ordersTest');
+var ordersRouter = require('./routes/orders');
+var userAuthRouter = require('./routes/user-auth');
 
 var app = express();
 app.use(cors({ credentials: true }));
@@ -43,6 +47,12 @@ app.use('/uploads', express.static('uploads'));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
+
+app.use('/user', userRouter);
+app.use('/orders', ordersRouter);
+app.use('/users-test', usersRouter);
+app.use('/orders-test', ordersRouterTest);
+app.use('/user-auth', userAuthRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
