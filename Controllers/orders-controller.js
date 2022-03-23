@@ -52,7 +52,7 @@ exports.orders_get_all = ('/', (req, res, next) => {
                             bookImage: "http://localhost:5000/" + doc.book.bookImage
                         },
                         quantity: doc.quantity,
-
+                        count: docs.length,
                         request: {
                             type: "GET",
                             url: "http://127.0.0.1:5000/books/" + doc._id

@@ -4,7 +4,6 @@ const verifyAuth = require('../Auth/verify-token');
 const UserController = require("../Controllers/user-controller");
 
 
-
 router.post("/signup", UserController.signup_user);
 
 router.get("/signin", UserController.signin_user);

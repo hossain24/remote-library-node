@@ -3,8 +3,12 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+
 const rootRouter = require('./Routes/root');
 const userRouter = require('./Routes/user');
 const booksRouter = require('./Routes/books');
@@ -12,21 +16,18 @@ const ordersRouterTest = require('./Routes/ordersTest');
 const ordersRouter = require('./Routes/orders');
 const usersRouter = require('./Routes/users');
 const userAuthRouter = require('./Routes/user-auth');
-const dotenv = require('dotenv');
+const productsRouter = require('./Routes/products');
+const cartRouter = require('./Routes/cart');
+
 dotenv.config();
-
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
-
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
 
 // A middleware to log incoming request 
 app.use(morgan('dev'));
 
-// const server = http.createServer(app);
+const server = http.createServer(app);
 const db = mongoose.connect('mongodb+srv://hossain:' + process.env.Mongo_DB_PW + '@cluster0.0gqec.mongodb.net/portfolioAPI?retryWrites=true&w=majority',
     console.log("Database is connected!"));
+
 
 // CORS consfiguration options
 app.use((req, res, next) => {
@@ -43,13 +44,13 @@ app.use((req, res, next) => {
 });
 
 
-app.use(
-    cors({
-        origin: ["http://localhost:3000"],
-        methods: ["GET", "POST"],
-        credentials: true,
-    })
-);
+// app.use(
+//     cors({
+//         origin: ["http://localhost:3000"],
+//         methods: ["GET", "POST"],
+//         credentials: true,
+//     })
+// );
 
 app.use(
     session({
@@ -68,6 +69,9 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
+app.use('/files', express.static('files'));
+
+
 app.use('/', rootRouter);
 app.use('/books', booksRouter);
 app.use('/user', userRouter);
@@ -75,6 +79,8 @@ app.use('/orders', ordersRouter);
 app.use('/users-test', usersRouter);
 app.use('/orders-test', ordersRouterTest);
 app.use('/user-auth', userAuthRouter);
+app.use('/products', productsRouter);
+app.use("/cart", cartRouter);
 
 app.use((req, res, next) => {
     const error = new Error("Page Not Found!");

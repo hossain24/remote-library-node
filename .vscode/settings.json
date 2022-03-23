@@ -1,0 +1,4 @@
+{
+    "appService.deploySubpath": ".",
+    "appService.defaultWebAppToDeploy": "/subscriptions/85520f94-c756-4f75-932e-0fb7e5b9424b/resourceGroups/library-node/providers/Microsoft.Web/sites/remote-library-node"
+}

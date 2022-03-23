@@ -113,7 +113,7 @@ router.get("/users", async (req, res) => {
 });
 
 // Log in
-router.post("/login", async (req, res) => {
+router.get("/signin", async (req, res) => {
     const { email, password } = req.body;
 
     // Look for user email in the database
